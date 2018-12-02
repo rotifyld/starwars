@@ -4,29 +4,31 @@
 #include <cassert>
 #include <type_traits>
 
-template<typename U, int minSpeed, int maxSpeed, bool canAttack> // todo
+template<typename U, int minSpeed, int maxSpeed, bool canAttack>
 class RebelStarship {
     U shield;
     U speed;
     U attackPower;
+    bool alive;
 
     void assert_speed() const {
-        assert(speed >= minSpeed && speed <= maxSpeed);
+        assert(speed >= minSpeed && speed <= maxSpeed && "Given speed is not within a range of choosen Starship.");
     }
 
 public:
+    bool isImperial() { return false; };
 
     using valueType = U;
 
     template<bool b = !canAttack, typename = typename std::enable_if<b>::type>
     RebelStarship(const U shield, const U speed)
-            : shield(shield), speed(speed) {
+            : shield(shield), speed(speed), alive(shield != 0) {
         assert_speed();
     }
 
     template<bool b = canAttack, typename = typename std::enable_if<b>::type>
     RebelStarship(const U shield, const U speed, const U attackPower)
-            : shield(shield), speed(speed), attackPower(attackPower) {
+            : shield(shield), speed(speed), attackPower(attackPower), alive(shield != 0) {
         assert_speed();
     }
 
@@ -37,9 +39,12 @@ public:
     template<bool b = canAttack, typename = typename std::enable_if<b>::type>
     U getAttackPower() const { return attackPower; }
 
+    bool isAlive() const { return alive; }
+
     void takeDamage(const U damage) {
-        if (damage > shield) {
+        if (damage >= shield) {
             shield = U{0};
+            alive = false;
         } else {
             shield -= damage;
         }
