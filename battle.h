@@ -32,9 +32,7 @@ class SpaceBattle {
     size_t rebelFleet;
     T actualTime;
 
-public:
     static std::unordered_set<T> attackTimes;
-private:
 
     template<T t = 0>
     static constexpr std::unordered_set<T> countAttackTimes(std::unordered_set<T> times) {

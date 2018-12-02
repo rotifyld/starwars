@@ -54,7 +54,10 @@ void attack(ImperialStarship<U1> &imperialShip, XWing<U2> &rebelShip) {
 }
 
 template<typename S1, typename S2>
-void attack(S1 &ship1, S2 &ship2) {}
+void attack(S1 &ship1, S2 &ship2) {
+    (void) ship1;
+    (void) ship2;
+}
 
 template<typename U>
 using DeathStar = ImperialStarship<U>;
