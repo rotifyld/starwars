@@ -9,12 +9,8 @@
  * konstruktor explicit
  *
  * assert shield, attack, itd.
- */
-
-/**
- * todo
  *
- * odpowiedź z moodle'a shield == 0
+ * valueType?
  */
 
 #include "imperialfleet.h"
@@ -47,7 +43,7 @@ class SpaceBattle {
     template<size_t n = 0>
     constexpr void iterateCountShips() {
         if constexpr(n < sizeof...(S)) {
-            if constexpr (std::get<n>(ships).isImperial) {
+            if (std::get<n>(ships).isImperial) {
                 imperialFleet++;
             } else {
                 rebelFleet++;

@@ -12,7 +12,8 @@ class RebelStarship {
     bool alive;
 
     void assert_speed() const {
-        assert(speed >= minSpeed && speed <= maxSpeed && "Given speed is not within a range of chosen starship.");
+        assert(speed >= static_cast<U>(minSpeed) && speed <= static_cast<U>(maxSpeed) &&
+               "Given speed is not within a range of chosen starship.");
     }
 
 public:
