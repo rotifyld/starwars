@@ -11,6 +11,7 @@ int main() {
     DeathStar<long> deathStar(10000, 75);
     TIEFighter<unsigned> fighter(50, 9);
     ImperialDestroyer<int> destroyer(150, 20);
+
     auto battle = SpaceBattle<short, 1, 23,
             DeathStar<long>,
             Explorer<int>,
@@ -33,6 +34,7 @@ int main() {
     battle.tick(4);
     assert(battle.countRebelFleet() == 0);
     assert(battle.countImperialFleet() == 1);
+
 
     battle.tick(1); // Wypisuje "IMPERIUM WON\n".
 }

@@ -17,7 +17,7 @@ public:
     using valueType = U;
 
     ImperialStarship(const U shield, const U attackPower)
-            : shield(shield), attackPower(attackPower), alive(shield != 0) {
+            : shield(shield), attackPower(attackPower), alive(shield > 0) {
     }
 
     U getShield() const { return shield; }
@@ -36,15 +36,15 @@ public:
     }
 };
 
+template <typename I, typename T>
+void attack(I &imperialShip, Explorer<T> &rebelShip) {
+    rebelShip.takeDamage(imperialShip.getAttackPower());
+}
+
 template <typename I, typename R>
 void attack(I &imperialShip, R &rebelShip) {
     rebelShip.takeDamage(imperialShip.getAttackPower());
     imperialShip.takeDamage(rebelShip.getAttackPower());
-}
-
-template <typename I, typename T>
-void attack(I &imperialShip, Explorer<T> &rebelShip) {
-    rebelShip.takeDamage(imperialShip.getAttackPower());
 }
 
 template<typename U>

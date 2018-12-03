@@ -23,13 +23,13 @@ public:
 
     template<bool b = !canAttack, typename = typename std::enable_if<b>::type>
     RebelStarship(const U shield, const U speed)
-            : shield(shield), speed(speed), alive(shield != 0) {
+            : shield(shield), speed(speed), alive(shield > 0) {
         assert_speed();
     }
 
     template<bool b = canAttack, typename = typename std::enable_if<b>::type>
     RebelStarship(const U shield, const U speed, const U attackPower)
-            : shield(shield), speed(speed), attackPower(attackPower), alive(shield != 0) {
+            : shield(shield), speed(speed), attackPower(attackPower), alive(shield > 0) {
         assert_speed();
     }
 

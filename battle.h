@@ -19,34 +19,55 @@
 #include <tuple>
 #include <iostream>
 #include <unordered_set>
+#include <vector>
 
 template<typename T, T t0, T t1, typename ...S>
 class SpaceBattle {
     std::tuple<S...> ships;
     size_t imperialFleet;
     size_t rebelFleet;
+    std::vector<size_t> imperialIndices;
+    std::vector<size_t> rebelIndices;
     T actualTime;
 
-    static std::unordered_set<T> attackTimes;
+    template<T i = 0, T i_sq = 0>
+    static constexpr size_t sqrt_t1() {
+        if constexpr (i_sq < t1) {
+            return sqrt_t1<i + 1, i_sq + (2 * i) + 1>();
+        } else {
+            return static_cast<size_t>(i);
+        }
+    }
 
-    template<T t = 0>
-    static constexpr std::unordered_set<T> countAttackTimes(std::unordered_set<T> times) {
-        constexpr T t_sq = t * t;
-        if constexpr (t_sq < t1) {
-            times.insert(t_sq);
-            return countAttackTimes<t + 1>(times);
+    static constexpr size_t attackTimesSize = sqrt_t1();
+
+    template<T i = 0, T i_sq = 0>
+    static constexpr std::array<T, attackTimesSize> countAttackTimes(std::array<T, attackTimesSize> times) {
+        if constexpr (i_sq < t1) {
+            times[static_cast<size_t>(i)] = i_sq;
+            return countAttackTimes<i + 1, i_sq + (2 * i) + 1>(times);
         }
         return times;
     }
 
-    // counts ships via iterating over the tuple
+    static constexpr std::array<T, attackTimesSize> attackTimes = countAttackTimes(
+            std::array<T, attackTimesSize>{});
+
+
     template<size_t n = 0>
     constexpr void iterateCountShips() {
         if constexpr(n < sizeof...(S)) {
-            if (std::get<n>(ships).isImperial) {
-                imperialFleet++;
+            auto ship = std::get<n>(ships);
+            if (ship.isImperial) {
+                if (ship.isAlive()) {
+                    imperialFleet++;
+                }
+                imperialIndices.push_back(n); // todo
             } else {
-                rebelFleet++;
+                if (ship.isAlive()) {
+                    rebelFleet++;
+                }
+                rebelIndices.push_back(n);
             }
             iterateCountShips<n + 1>();
         }
@@ -69,13 +90,22 @@ class SpaceBattle {
 
     template<size_t n = 0>
     constexpr void iterateFindImperial() {
-        if constexpr(n < sizeof...(S)) {
+        if constexpr(n < sizeof ...(S)) {
             auto &ship = std::get<n>(ships);
             if constexpr (ship.isImperial) {
                 iterateFindRebel<>(ship);
             }
             iterateFindImperial<n + 1>();
         }
+    }
+
+    bool isASquareTime(T t) {
+        for (size_t i = 0; i < attackTimesSize; ++i) {
+            if (t == attackTimes[i]) {
+                return true;
+            }
+        }
+        return false;
     }
 
 public:
@@ -93,11 +123,14 @@ public:
     size_t countRebelFleet() const { return rebelFleet; };
 
     void tick(const T &timeStep) {
-        if (imperialFleet == 0 && rebelFleet == 0) std::cout << "DRAW\n";
-        else if (imperialFleet == 0) std::cout << "REBELLION WON\n";
-        else if (rebelFleet == 0) std::cout << "IMPERIUM WON\n";
-        else {
-            if (attackTimes.find(actualTime) != attackTimes.end()) {
+        if (imperialFleet == 0 && rebelFleet == 0) {
+            std::cout << "DRAW\n";
+        } else if (imperialFleet == 0) {
+            std::cout << "REBELLION WON\n";
+        } else if (rebelFleet == 0) {
+            std::cout << "IMPERIUM WON\n";
+        } else {
+            if (isASquareTime(actualTime)) {
                 iterateFindImperial();
             }
             actualTime = (actualTime + timeStep) % t1;
@@ -105,8 +138,8 @@ public:
     };
 };
 
-template<typename T, T t0, T t1, typename... S>
-std::unordered_set<T> SpaceBattle<T, t0, t1, S...>::attackTimes = countAttackTimes(
-        std::unordered_set<T>{});
+//template<typename T, T t0, T t1, typename... S>
+//std::array<T, SpaceBattle<T, t0, t1, S ...>::attackTimesSize> SpaceBattle<T, t0, t1, S...>::attackTimes = countAttackTimes(
+//        attackTimes);
 
 #endif //STARWARS_BATTLE_H
