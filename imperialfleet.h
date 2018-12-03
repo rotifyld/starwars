@@ -12,7 +12,7 @@ class ImperialStarship {
     bool alive;
 
 public:
-    bool isImperial() { return true; };
+    static constexpr bool isImperial = true;
 
     using valueType = U;
 
@@ -36,27 +36,15 @@ public:
     }
 };
 
-template<typename U1, typename U2>
-void attack(ImperialStarship<U1> &imperialShip, Explorer<U2> &rebelShip) {
+template <typename I, typename T>
+void attack(I &imperialShip, Explorer<T> &rebelShip) {
     rebelShip.takeDamage(imperialShip.getAttackPower());
 }
 
-template<typename U1, typename U2>
-void attack(ImperialStarship<U1> &imperialShip, StarCruiser<U2> &rebelShip) {
-    rebelShip.takeDamage(imperialShip.getAttackPower());
-    imperialShip.takeDamage(rebelShip.getAttackPower());
-}
-
-template<typename U1, typename U2>
-void attack(ImperialStarship<U1> &imperialShip, XWing<U2> &rebelShip) {
+template <typename I, typename R>
+void attack(I &imperialShip, R &rebelShip) {
     rebelShip.takeDamage(imperialShip.getAttackPower());
     imperialShip.takeDamage(rebelShip.getAttackPower());
-}
-
-template<typename S1, typename S2>
-void attack(S1 &ship1, S2 &ship2) {
-    (void) ship1;
-    (void) ship2;
 }
 
 template<typename U>

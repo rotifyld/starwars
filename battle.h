@@ -6,10 +6,9 @@
  * countAttackTimes(std::vector<T> times)
  *                                ^ & czy nie &
  *
- * puste battle w imperialfleet.h
- *
  * konstruktor explicit
  *
+ * assert shield, attack, itd.
  */
 
 /**
@@ -48,7 +47,7 @@ class SpaceBattle {
     template<size_t n = 0>
     constexpr void iterateCountShips() {
         if constexpr(n < sizeof...(S)) {
-            if (std::get<n>(ships).isImperial()) {
+            if constexpr (std::get<n>(ships).isImperial) {
                 imperialFleet++;
             } else {
                 rebelFleet++;
@@ -61,7 +60,7 @@ class SpaceBattle {
     constexpr void iterateFindRebel(Imperial &attacker) {
         if constexpr(n < sizeof...(S)) {
             auto &ship = std::get<n>(ships);
-            if (!ship.isImperial()) {
+            if constexpr (!ship.isImperial) {
                 if (attacker.isAlive() && ship.isAlive()) {
                     attack(attacker, ship);
                     if (!attacker.isAlive()) imperialFleet--;
@@ -76,7 +75,7 @@ class SpaceBattle {
     constexpr void iterateFindImperial() {
         if constexpr(n < sizeof...(S)) {
             auto &ship = std::get<n>(ships);
-            if (ship.isImperial()) {
+            if constexpr (ship.isImperial) {
                 iterateFindRebel<>(ship);
             }
             iterateFindImperial<n + 1>();

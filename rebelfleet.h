@@ -12,11 +12,11 @@ class RebelStarship {
     bool alive;
 
     void assert_speed() const {
-        assert(speed >= minSpeed && speed <= maxSpeed && "Given speed is not within a range of choosen Starship.");
+        assert(speed >= minSpeed && speed <= maxSpeed && "Given speed is not within a range of chosen starship.");
     }
 
 public:
-    bool isImperial() { return false; };
+    static constexpr bool isImperial = false;
 
     using valueType = U;
 
