@@ -77,7 +77,7 @@ class SpaceBattle {
     constexpr void iterateFindRebel(Imperial &attacker) {
         if constexpr(n < sizeof...(S)) {
             auto &ship = std::get<n>(ships);
-            if constexpr (!ship.isImperial) {
+            if (!ship.isImperial) {                             //constexpr
                 if (attacker.isAlive() && ship.isAlive()) {
                     attack(attacker, ship);
                     if (!attacker.isAlive()) imperialFleet--;
@@ -90,9 +90,9 @@ class SpaceBattle {
 
     template<size_t n = 0>
     constexpr void iterateFindImperial() {
-        if constexpr(n < sizeof ...(S)) {
+        if constexpr (n < sizeof ...(S)) {
             auto &ship = std::get<n>(ships);
-            if constexpr (ship.isImperial) {
+            if (ship.isImperial) {
                 iterateFindRebel<>(ship);
             }
             iterateFindImperial<n + 1>();

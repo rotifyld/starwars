@@ -24,7 +24,7 @@ public:
 
     U getAttackPower() const { return attackPower; }
 
-    bool isAlive() { return alive; }
+    bool isAlive() const { return alive; }
 
     void takeDamage(const U damage) {
         if (damage >= shield) {
@@ -36,15 +36,36 @@ public:
     }
 };
 
-template <typename I, typename T>
-void attack(I &imperialShip, Explorer<T> &rebelShip) {
-    rebelShip.takeDamage(imperialShip.getAttackPower());
+//template<typename T1, typename T2>
+//void attack(T1 &ship1, T2& ship2)
+//{
+//    if(ship1.isImperial && !ship2.isImperial) {
+//        ship2.takeDamage(ship1.getAttackPower());
+//        ship1.takeDamage(ship2.getAttackPower());
+//    }
+//}
+
+template <typename T1, typename T2>
+void attack(T1 ship1, T2 ship2) {
+    (void)ship1;
+    (void)ship2;
 }
 
-template <typename I, typename R>
-void attack(I &imperialShip, R &rebelShip) {
+template <typename T1, typename T2>
+void attack(ImperialStarship<T1> ship1, ImperialStarship<T2> ship2) {
+    (void)ship1;
+    (void)ship2;
+}
+
+template <typename T1, typename T2>
+void attack(ImperialStarship<T2>& imperialShip, T1& rebelShip) {
     rebelShip.takeDamage(imperialShip.getAttackPower());
     imperialShip.takeDamage(rebelShip.getAttackPower());
+}
+
+template <typename I, typename T>
+void attack(ImperialStarship<I> &imperialShip, Explorer<T> &rebelShip) {
+    rebelShip.takeDamage(imperialShip.getAttackPower());
 }
 
 template<typename U>
