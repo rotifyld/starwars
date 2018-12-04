@@ -1,24 +1,11 @@
 #ifndef STARWARS_BATTLE_H
 #define STARWARS_BATTLE_H
 
-/** todo pytania
- *
- * countAttackTimes(std::vector<T> times)
- *                                ^ & czy nie &
- *
- * konstruktor explicit
- *
- * assert shield, attack, itd.
- *
- * valueType?
- */
-
 #include "imperialfleet.h"
 #include "rebelfleet.h"
 
-#include <tuple>
 #include <iostream>
-#include <vector>
+#include <tuple>
 
 template<typename T, T t0, T t1, typename ...S>
 class SpaceBattle {
@@ -50,7 +37,6 @@ class SpaceBattle {
 
     static constexpr std::array<T, attackTimesSize> attackTimes = countAttackTimes(
             std::array<T, attackTimesSize>{});
-
 
     template<size_t n = 0>
     void iterateCountShips() {
