@@ -12,6 +12,15 @@ int main() {
     TIEFighter<unsigned> fighter(50, 9);
     ImperialDestroyer<int> destroyer(150, 20);
 
+//    std::cout << " explorer : shield = " << explorer.getShield() << std::endl;
+//    std::cout << " deathStar : shield = " << deathStar.getShield() << " attackPower = " << deathStar.getAttackPower() << std::endl;
+//
+//    attack<DeathStar<long>, Explorer<int>>(deathStar, explorer);
+//
+//    std::cout << " explorer : shield = " << explorer.getShield() << std::endl;
+//    std::cout << " deathStar : shield = " << deathStar.getShield() << " attackPower = " << deathStar.getAttackPower() << std::endl;
+
+
     auto battle = SpaceBattle<short, 1, 23,
             DeathStar<long>,
             Explorer<int>,

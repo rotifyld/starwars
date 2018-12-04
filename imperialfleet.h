@@ -36,36 +36,42 @@ public:
     }
 };
 
-//template<typename T1, typename T2>
-//void attack(T1 &ship1, T2& ship2)
-//{
-//    if(ship1.isImperial && !ship2.isImperial) {
-//        ship2.takeDamage(ship1.getAttackPower());
-//        ship1.takeDamage(ship2.getAttackPower());
-//    }
+//template<typename S1, typename S2, bool attack, bool attackBack>
+//void performAttack(S1 &ship1, S2 &ship2) {
+//    if constexpr (attack)       ship2.takeDamage(ship1.getAttackPower());
+//    if constexpr (attackBack)   ship1.takeDamage(ship2.getAttackPower());
 //}
 
-template <typename T1, typename T2>
-void attack(T1 ship1, T2 ship2) {
-    (void)ship1;
-    (void)ship2;
+//template <typename U1, typename U2>
+//using attack<ImperialStarship<int>, RebelStarship<int>>() = performAttack<U1, U2, true, true>();
+
+
+template<typename S1, typename S2>
+void performAttack(S1 &ship1, S2 &ship2) {
+    (void) ship1;
+    (void) ship2;
 }
 
-template <typename T1, typename T2>
-void attack(ImperialStarship<T1> ship1, ImperialStarship<T2> ship2) {
-    (void)ship1;
-    (void)ship2;
+template<typename U1, typename U2>
+void performAttack(ImperialStarship<U1> &ship1, ImperialStarship<U2> &ship2) {
+    (void) ship1;
+    (void) ship2;
 }
 
-template <typename T1, typename T2>
-void attack(ImperialStarship<T2>& imperialShip, T1& rebelShip) {
+template<typename U, typename R>
+void performAttack(ImperialStarship<U> &imperialShip, R &rebelShip) {
     rebelShip.takeDamage(imperialShip.getAttackPower());
     imperialShip.takeDamage(rebelShip.getAttackPower());
 }
 
-template <typename I, typename T>
-void attack(ImperialStarship<I> &imperialShip, Explorer<T> &rebelShip) {
+template<typename U1, typename U2>
+void performAttack(ImperialStarship<U1> &imperialShip, Explorer<U2> &rebelShip) {
     rebelShip.takeDamage(imperialShip.getAttackPower());
+}
+
+template<typename S1, typename S2>
+void attack(S1 &ship1, S2 &ship2) {
+    performAttack(ship1, ship2);
 }
 
 template<typename U>

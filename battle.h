@@ -18,7 +18,6 @@
 
 #include <tuple>
 #include <iostream>
-#include <unordered_set>
 #include <vector>
 
 template<typename T, T t0, T t1, typename ...S>
@@ -26,8 +25,6 @@ class SpaceBattle {
     std::tuple<S...> ships;
     size_t imperialFleet;
     size_t rebelFleet;
-    std::vector<size_t> imperialIndices;
-    std::vector<size_t> rebelIndices;
     T actualTime;
 
     template<T i = 0, T i_sq = 0>
@@ -42,7 +39,8 @@ class SpaceBattle {
     static constexpr size_t attackTimesSize = sqrt_t1();
 
     template<T i = 0, T i_sq = 0>
-    static constexpr std::array<T, attackTimesSize> countAttackTimes(std::array<T, attackTimesSize> times) {
+    static constexpr std::array<T, attackTimesSize>
+    countAttackTimes(std::array<T, attackTimesSize> times) {
         if constexpr (i_sq < t1) {
             times[static_cast<size_t>(i)] = i_sq;
             return countAttackTimes<i + 1, i_sq + (2 * i) + 1>(times);
@@ -55,29 +53,23 @@ class SpaceBattle {
 
 
     template<size_t n = 0>
-    constexpr void iterateCountShips() {
+    void iterateCountShips() {
         if constexpr(n < sizeof...(S)) {
             auto ship = std::get<n>(ships);
             if (ship.isImperial) {
-                if (ship.isAlive()) {
-                    imperialFleet++;
-                }
-                imperialIndices.push_back(n); // todo
+                if (ship.isAlive()) imperialFleet++;
             } else {
-                if (ship.isAlive()) {
-                    rebelFleet++;
-                }
-                rebelIndices.push_back(n);
+                if (ship.isAlive()) rebelFleet++;
             }
             iterateCountShips<n + 1>();
         }
     }
 
     template<size_t n = 0, typename Imperial>
-    constexpr void iterateFindRebel(Imperial &attacker) {
+    void iterateFindRebel(Imperial &attacker) {
         if constexpr(n < sizeof...(S)) {
             auto &ship = std::get<n>(ships);
-            if (!ship.isImperial) {                             //constexpr
+            if (!ship.isImperial) {
                 if (attacker.isAlive() && ship.isAlive()) {
                     attack(attacker, ship);
                     if (!attacker.isAlive()) imperialFleet--;
@@ -89,7 +81,7 @@ class SpaceBattle {
     }
 
     template<size_t n = 0>
-    constexpr void iterateFindImperial() {
+    void iterateFindImperial() {
         if constexpr (n < sizeof ...(S)) {
             auto &ship = std::get<n>(ships);
             if (ship.isImperial) {
@@ -138,8 +130,5 @@ public:
     };
 };
 
-//template<typename T, T t0, T t1, typename... S>
-//std::array<T, SpaceBattle<T, t0, t1, S ...>::attackTimesSize> SpaceBattle<T, t0, t1, S...>::attackTimes = countAttackTimes(
-//        attackTimes);
 
 #endif //STARWARS_BATTLE_H
