@@ -155,13 +155,13 @@ public:
         imperialFleet = 0;
         rebelFleet = 0;
         iterateCountShips<0>();
-    };
+    }
 
     /// Function that returns number of alive imperial ships at the moment.
-    size_t countImperialFleet() const { return imperialFleet; };
+    size_t countImperialFleet() const { return imperialFleet; }
 
     /// Function that returns number of alive rebel ships at the moment.
-    size_t countRebelFleet() const { return rebelFleet; };
+    size_t countRebelFleet() const { return rebelFleet; }
 
     /**
      * Function that checks whether battle is over;
@@ -182,7 +182,7 @@ public:
             }
             actualTime = (actualTime + timeStep) % t1;
         }
-    };
+    }
 };
 
 
